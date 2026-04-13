@@ -1,14 +1,21 @@
-id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
-1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18
-2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71
-3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10
-4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86
-5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05
-6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92
-7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89
-8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
-9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
-10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness,popularity,release_decade,mood_tags,instrumentalness,language
+1,Sunrise City,Neon Echo,pop,happy,0.82,118,0.84,0.79,0.18,85,2010,"euphoric,energetic",0.05,English
+2,Midnight Coding,LoRoom,lofi,chill,0.42,78,0.56,0.62,0.71,60,2020,"nostalgic,calm",0.80,Instrumental
+3,Storm Runner,Voltline,rock,intense,0.91,152,0.48,0.66,0.10,90,2000,"aggressive,epic",0.02,English
+4,Library Rain,Paper Lanterns,lofi,chill,0.35,72,0.60,0.58,0.86,55,2010,"soothing,nostalgic",0.95,Instrumental
+5,Gym Hero,Max Pulse,pop,intense,0.93,132,0.77,0.88,0.05,88,2020,"motivational,energetic",0.01,English
+6,Spacewalk Thoughts,Orbit Bloom,ambient,chill,0.28,60,0.65,0.41,0.92,50,2010,"dreamy,calm",0.99,Instrumental
+7,Coffee Shop Stories,Slow Stereo,jazz,relaxed,0.37,90,0.71,0.54,0.89,65,2000,"relaxed,warm",0.60,English
+8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22,70,1980,"nostalgic,moody",0.10,English
+9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78,58,2020,"focused,calm",0.85,Instrumental
+10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35,80,2010,"uplifting,bright",0.07,English
+11,Midnight Sonata,Clara Keys,classical,dreamy,0.22,68,0.45,0.31,0.97,75,1990,"dreamy,calm",0.98,Instrumental
+12,Steel Heart,Iron Pulse,metal,aggressive,0.95,170,0.38,0.55,0.08,92,2010,"aggressive,epic",0.00,English
+13,Blue River,Delta Soul,blues,melancholic,0.41,92,0.33,0.47,0.81,62,1980,"melancholic,nostalgic",0.40,English
+14,Island Vibes,Sunny Roots,reggae,soothing,0.50,76,0.72,0.69,0.60,68,2000,"soothing,relaxed",0.30,English
+15,Country Roads,Maple Lane,country,uplifting,0.67,110,0.80,0.64,0.40,77,1990,"uplifting,nostalgic",0.20,English
+16,Pixel Dreams,Bitwave,electronic,playful,0.78,128,0.77,0.88,0.15,73,2020,"playful,energetic",0.05,Instrumental
+17,Golden Fields,Willow Folk,folk,dark,0.36,102,0.29,0.53,0.85,59,1980,"dark,calm",0.90,English
 11,Midnight Sonata,Clara Keys,classical,dreamy,0.22,68,0.45,0.31,0.97
 12,Steel Heart,Iron Pulse,metal,aggressive,0.95,170,0.38,0.55,0.08
 13,Blue River,Delta Soul,blues,melancholic,0.41,92,0.33,0.47,0.81

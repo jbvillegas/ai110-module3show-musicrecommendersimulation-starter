@@ -226,3 +226,9 @@ Below is a screenshot of the CLI output showing the top recommendations for the 
 
 ![Sample CLI Output](Screenshot%202026-04-13%20at%2018.33.33.png)
 
+## Additional Profile Outputs
+
+Below is a screenshot of the CLI output for adversarial/edge case profiles:
+
+![Adversarial Profile Output](Screenshot%202026-04-13%20at%2018.43.27.png)
+

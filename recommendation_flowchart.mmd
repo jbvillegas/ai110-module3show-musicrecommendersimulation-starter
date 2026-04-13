@@ -1,0 +1,7 @@
+flowchart TD
+    A[User Preferences] --> B[For each song in CSV]
+    B --> C[Apply Scoring Logic]
+    C --> D[Assign Score]
+    D --> E[Sort Songs by Score]
+    E --> F[Select Top K Recommendations]
+    F --> G[Output Ranked List]

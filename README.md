@@ -19,15 +19,26 @@ Replace this paragraph with your own summary of what your version does.
 
 Explain your design in plain language.
 
-Some prompts to answer:
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+System overview:
 
-You can include a simple diagram or bullet list if helpful.
+Input: User profile (favorite_genre, favorite_mood, target_energy, target_tempo_bpm)
+Process: For each song in the dataset, compute a score using the algorithm recipe below. Sort all songs by score. Output: Top K recommendations.
+
+Features used:
+- Song: genre, mood, energy, tempo_bpm
+- UserProfile: favorite_genre, favorite_mood, target_energy, target_tempo_bpm
+
+Algorithm Recipe:
+- +2.0 points for genre match
+- +1.0 point for mood match
+- +1.0 × (1 - |energy_song - target_energy|)
+- +0.5 × (1 - normalized_tempo_diff)
+  - where normalized_tempo_diff = |tempo_song - target_tempo_bpm| / (max_tempo - min_tempo)
+
+Songs are ranked by total score. Top K songs are recommended.
+
+Potential bias: This system might over-prioritize genre, ignoring great songs that match the user's mood, energy, or tempo but not genre. Numerical features help diversify results, but genre dominates ranking.
 
 ---
 
@@ -208,4 +219,10 @@ A few sentences about what you learned:
 - What surprised you about how your system behaved
 - How did building this change how you think about real music recommenders
 - Where do you think human judgment still matters, even if the model seems "smart"
+
+## Example Output
+
+Below is a screenshot of the CLI output showing the top recommendations for the default "pop/happy" profile:
+
+![Sample CLI Output](Screenshot%202026-04-13%20at%2018.33.33.png)
 

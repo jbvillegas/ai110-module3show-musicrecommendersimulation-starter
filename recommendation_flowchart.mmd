@@ -1,7 +1,30 @@
 flowchart TD
-    A[User Preferences] --> B[For each song in CSV]
-    B --> C[Apply Scoring Logic]
-    C --> D[Assign Score]
-    D --> E[Sort Songs by Score]
-    E --> F[Select Top K Recommendations]
-    F --> G[Output Ranked List]
+    subgraph Recommendation
+        A[User Preferences] --> B[Load songs from CSV]
+        B --> C[Score each song]
+        C --> D[Sort songs by score]
+        D --> E[Select top K recommendations]
+        E --> F[Display ranked list]
+    end
+
+    subgraph Study_Bot
+        H[Query topic] --> I[Load notes from notes/ folder]
+        I --> J[Retrieve top matching passages]
+        J --> K[Generate quiz question using specialized model]
+        K --> L[Validate question text]
+    end
+
+    subgraph Reliability
+        M[Run repeated evaluations] --> N[Compare recommendation outputs]
+        M --> O[Compare generated questions]
+        N --> P[Stability score]
+        O --> Q[Consistency report]
+    end
+
+    A --> B
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    N --> P
+    O --> Q

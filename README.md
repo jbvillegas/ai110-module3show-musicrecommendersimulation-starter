@@ -1,234 +1,154 @@
-# 🎵 Music Recommender Simulation
+# 🎵 Music Recommender + Study Bot
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
+This project extends the original Music Recommender Simulation with an AI-driven study assistant. It still recommends songs from `data/songs.csv` based on genre, mood, energy, and tempo, but now also includes:
 
-Your goal is to:
+- Retrieval-augmented generation (RAG) using notes before answer generation
+- An agentic workflow that plans, acts, and checks its own work
+- A simulated specialized model tone for the study assistant
+- Reliability checks for recommendation and quiz output consistency
 
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+This makes the project a portfolio-ready example of a complete AI workflow, not just a rule-based recommender.
 
 ---
 
-## How The System Works
+## Architecture Overview
 
-Explain your design in plain language.
+The system is organized around three main components:
 
+- `src/recommender.py`: loads songs, scores them, and returns ranked recommendations.
+- `src/rag.py` + `src/agent.py`: loads notes, retrieves relevant passages, and generates quiz questions in a specialized tone.
+- `src/reliability.py`: evaluates consistency and stability across repeated runs.
 
-System overview:
+Data flow:
 
-Input: User profile (favorite_genre, favorite_mood, target_energy, target_tempo_bpm)
-Process: For each song in the dataset, compute a score using the algorithm recipe below. Sort all songs by score. Output: Top K recommendations.
-
-Features used:
-- Song: genre, mood, energy, tempo_bpm
-- UserProfile: favorite_genre, favorite_mood, target_energy, target_tempo_bpm
-
-Algorithm Recipe:
-- +2.0 points for genre match
-- +1.0 point for mood match
-- +1.0 × (1 - |energy_song - target_energy|)
-- +0.5 × (1 - normalized_tempo_diff)
-  - where normalized_tempo_diff = |tempo_song - target_tempo_bpm| / (max_tempo - min_tempo)
-
-Songs are ranked by total score. Top K songs are recommended.
-
-Potential bias: This system might over-prioritize genre, ignoring great songs that match the user's mood, energy, or tempo but not genre. Numerical features help diversify results, but genre dominates ranking.
+1. Input arrives through `src/main.py` as a selected mode.
+2. Recommendation mode scores songs and returns top matches.
+3. Quiz mode searches notes first, then generates a question grounded in those notes.
+4. Reliability mode repeats output generation and reports stability metrics.
 
 ---
 
-## Getting Started
+## Setup Instructions
 
-### Setup
-
-1. Create a virtual environment (optional but recommended):
+1. Create and activate a Python virtual environment:
 
    ```bash
    python -m venv .venv
-   source .venv/bin/activate      # Mac or Linux
-   .venv\Scripts\activate         # Windows
+   source .venv/bin/activate
+   ```
 
-2. Install dependencies
+2. Install dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Run the app:
+3. Run recommendations:
 
-```bash
-python -m src.main
-```
+   ```bash
+   python -m src.main --mode recommend
+   ```
 
-### Running Tests
+4. Run the RAG-powered study bot:
 
-Run the starter tests with:
+   ```bash
+   python -m src.main --mode quiz --query "music recommendation" --tone "friendly"
+   ```
 
-```bash
-pytest
-```
+5. Run reliability evaluation:
 
-You can add more tests in `tests/test_recommender.py`.
-
----
-
-## Experiments You Tried
-
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+   ```bash
+   python -m src.main --mode reliability
+   ```
 
 ---
 
-## Limitations and Risks
+## Sample Interactions
 
-Summarize some limitations of your recommender.
+### Recommendation Example
 
-Examples:
+```bash
+python -m src.main --mode recommend --top_k 3
+```
 
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
+Expected output includes top songs with scores and reason summaries like:
 
-You will go deeper on this in your model card.
+- genre match
+- energy closeness
+- tempo closeness
+
+### Quiz Generation Example
+
+```bash
+python -m src.main --mode quiz --query "music recommendation" --tone "professional"
+```
+
+Expected output includes:
+
+- the agent plan
+- retrieved note titles
+- a quiz question grounded in the retrieved notes
+- a validity check result
+
+### Reliability Example
+
+```bash
+python -m src.main --mode reliability
+```
+
+Expected output includes metrics for:
+
+- recommendation stability
+- quiz generation consistency
+- an example generated question
+
+---
+
+## Design Decisions
+
+- I used a lightweight keyword-based retriever so the RAG flow works without external APIs.
+- The study assistant is modeled as a simulated specialized model in `src/rag.py`, which changes wording based on a selected tone.
+- The agent uses a visible plan-act-check loop in `src/agent.py`, making the workflow auditable and easier to test.
+- Reliability is measured by repeating outputs and checking whether results remain stable.
+
+Trade-offs:
+
+- The specialized model is simulated rather than a real fine-tuned LLM, so it is reproducible but not as flexible.
+- The recommendation logic remains rule-based, keeping it explainable but not learned from user behavior.
+
+---
+
+## Testing Summary
+
+Automated tests cover:
+
+- recommendation sorting and explanations
+- agent planning and question generation
+- retrieval-driven quiz generation
+- reliability checks for repeated outputs
+
+Run tests with:
+
+```bash
+python -m pytest -q
+```
+
+Current status: 5 tests passed.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+This project taught me how retrieval and planning can be integrated into a small but meaningful AI workflow. It also reinforced that reliability matters: repeated runs are important to detect drift or unstable behavior.
 
-[**Model Card**](model_card.md)
+Limitations:
 
-Write 1 to 2 paragraphs here about what you learned:
+- The note retriever is keyword-based and may miss semantically relevant material.
+- The recommender still favors songs with strong genre or energy matches.
+- The system is designed for demonstration rather than real streaming service use.
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+Ethics and responsibility:
 
-
----
-
-## 7. `model_card_template.md`
-
-Combines reflection and model card framing from the Module 3 guidance. :contentReference[oaicite:2]{index=2}  
-
-```markdown
-# 🎧 Model Card - Music Recommender Simulation
-
-## 1. Model Name
-
-Give your recommender a name, for example:
-
-> VibeFinder 1.0
-
----
-
-## 2. Intended Use
-
-- What is this system trying to do
-- Who is it for
-
-Example:
-
-> This model suggests 3 to 5 songs from a small catalog based on a user's preferred genre, mood, and energy level. It is for classroom exploration only, not for real users.
-
----
-
-## 3. How It Works (Short Explanation)
-
-Describe your scoring logic in plain language.
-
-- What features of each song does it consider
-- What information about the user does it use
-- How does it turn those into a number
-
-Try to avoid code in this section, treat it like an explanation to a non programmer.
-
----
-
-## 4. Data
-
-Describe your dataset.
-
-- How many songs are in `data/songs.csv`
-- Did you add or remove any songs
-- What kinds of genres or moods are represented
-- Whose taste does this data mostly reflect
-
----
-
-## 5. Strengths
-
-Where does your recommender work well
-
-You can think about:
-- Situations where the top results "felt right"
-- Particular user profiles it served well
-- Simplicity or transparency benefits
-
----
-
-## 6. Limitations and Bias
-
-Where does your recommender struggle
-
-Some prompts:
-- Does it ignore some genres or moods
-- Does it treat all users as if they have the same taste shape
-- Is it biased toward high energy or one genre by default
-- How could this be unfair if used in a real product
-
----
-
-## 7. Evaluation
-
-How did you check your system
-
-Examples:
-- You tried multiple user profiles and wrote down whether the results matched your expectations
-- You compared your simulation to what a real app like Spotify or YouTube tends to recommend
-- You wrote tests for your scoring logic
-
-You do not need a numeric metric, but if you used one, explain what it measures.
-
----
-
-## 8. Future Work
-
-If you had more time, how would you improve this recommender
-
-Examples:
-
-- Add support for multiple users and "group vibe" recommendations
-- Balance diversity of songs instead of always picking the closest match
-- Use more features, like tempo ranges or lyric themes
-
----
-
-## 9. Personal Reflection
-
-A few sentences about what you learned:
-
-- What surprised you about how your system behaved
-- How did building this change how you think about real music recommenders
-- Where do you think human judgment still matters, even if the model seems "smart"
-
-## Example Output
-
-Below is a screenshot of the CLI output showing the top recommendations for the default "pop/happy" profile:
-
-![Sample CLI Output](Screenshot%202026-04-13%20at%2018.33.33.png)
-
-## Additional Profile Outputs
-
-Below is a screenshot of the CLI output for adversarial/edge case profiles:
-
-![Adversarial Profile Output](Screenshot%202026-04-13%20at%2018.43.27.png)
-
+I kept the project focused on safe domains like music and studying, and I added validation checks so the AI workflow is less likely to produce unpredictable outputs.

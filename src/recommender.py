@@ -62,20 +62,33 @@ def load_songs(csv_path: str) -> List[Dict]:
     with open(csv_path, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
+            # Handle missing or None values for popularity and other fields
+            try:
+                popularity = float(row['popularity']) if row.get('popularity') not in (None, '', 'None') else 0.0
+            except (ValueError, TypeError):
+                popularity = 0.0
+            try:
+                release_decade = int(row['release_decade']) if row.get('release_decade') not in (None, '', 'None') else 0
+            except (ValueError, TypeError):
+                release_decade = 0
+            try:
+                instrumentalness = float(row['instrumentalness']) if row.get('instrumentalness') not in (None, '', 'None') else 0.0
+            except (ValueError, TypeError):
+                instrumentalness = 0.0
             song = {
-                'id': int(row['id']),
-                'title': row['title'],
-                'artist': row['artist'],
-                'genre': row['genre'],
-                'mood': row['mood'],
-                'energy': float(row['energy']),
-                'tempo_bpm': float(row['tempo_bpm']),
-                'valence': float(row['valence']),
-                'danceability': float(row['danceability']),
-                'acousticness': float(row['acousticness']),
-                'popularity': float(row['popularity']),
-                'release_decade': int(row['release_decade']),
-                'instrumentalness': float(row['instrumentalness']),
+                'id': int(row['id']) if row.get('id') not in (None, '', 'None') else 0,
+                'title': row.get('title', ''),
+                'artist': row.get('artist', ''),
+                'genre': row.get('genre', ''),
+                'mood': row.get('mood', ''),
+                'energy': float(row['energy']) if row.get('energy') not in (None, '', 'None') else 0.0,
+                'tempo_bpm': float(row['tempo_bpm']) if row.get('tempo_bpm') not in (None, '', 'None') else 0.0,
+                'valence': float(row['valence']) if row.get('valence') not in (None, '', 'None') else 0.0,
+                'danceability': float(row['danceability']) if row.get('danceability') not in (None, '', 'None') else 0.0,
+                'acousticness': float(row['acousticness']) if row.get('acousticness') not in (None, '', 'None') else 0.0,
+                'popularity': popularity,
+                'release_decade': release_decade,
+                'instrumentalness': instrumentalness,
                 'mood_tags': row.get('mood_tags', ''),
                 'language': row.get('language', 'english')
             }
@@ -108,7 +121,11 @@ def score_song_profile(user: UserProfile, song: Song) -> Tuple[float, List[str]]
         score += 0.5
         reasons.append("acoustic preference (+0.5)")
 
-    if song.language.lower() == 'english':
+    # Handle missing language gracefully
+    language = getattr(song, 'language', None)
+    if language is None and isinstance(song, dict):
+        language = song.get('language', '')
+    if isinstance(language, str) and language.lower() == 'english':
         score += 0.2
         reasons.append("English language (+0.2)")
 

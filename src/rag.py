@@ -4,15 +4,19 @@ from typing import Dict, List, Tuple
 
 
 def load_notes_folder(notes_dir: str) -> Dict[str, str]:
-    """Load all markdown notes from a folder into a retrieval corpus."""
-    corpus: Dict[str, str] = {}
+    """Load all markdown notes from a folder and chunk by paragraph for retrieval."""
+    corpus: Dict[Tuple[str, int], str] = {}
     if not os.path.isdir(notes_dir):
         return corpus
     for file_name in sorted(os.listdir(notes_dir)):
         if file_name.endswith(".md"):
             path = os.path.join(notes_dir, file_name)
             with open(path, "r", encoding="utf-8") as file:
-                corpus[file_name] = file.read()
+                text = file.read()
+                # Split by double newlines (paragraphs)
+                chunks = [chunk.strip() for chunk in text.split("\n\n") if chunk.strip()]
+                for idx, chunk in enumerate(chunks):
+                    corpus[(file_name, idx)] = chunk
     return corpus
 
 
@@ -21,16 +25,17 @@ def normalize_text(text: str) -> str:
 
 
 def search_notes(query: str, corpus: Dict[str, str], top_k: int = 3) -> List[Tuple[str, str]]:
-    """Retrieve the top-matching notes by keyword overlap."""
+    """Retrieve the top-matching note chunks by keyword overlap."""
     query_terms = set(normalize_text(query).split())
-    scored: List[Tuple[int, str, str]] = []
-    for title, text in corpus.items():
+    scored: List[Tuple[int, Tuple[str, int], str]] = []
+    for (file_name, idx), text in corpus.items():
         text_terms = set(normalize_text(text).split())
         score = sum(1 for term in query_terms if term in text_terms)
-        score += 1 if title and any(term in normalize_text(title) for term in query_terms) else 0
-        scored.append((score, title, text))
+        # Add a small bonus if the query matches the file name
+        score += 1 if file_name and any(term in normalize_text(file_name) for term in query_terms) else 0
+        scored.append((score, (file_name, idx), text))
     scored.sort(key=lambda item: item[0], reverse=True)
-    return [(title, text) for score, title, text in scored if score > 0][:top_k]
+    return [((f"{file_name} [chunk {idx}]"), text) for score, (file_name, idx), text in scored if score > 0][:top_k]
 
 
 def extract_snippet(text: str, max_chars: int = 240) -> str:

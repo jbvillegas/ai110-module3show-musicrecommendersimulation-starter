@@ -106,6 +106,20 @@ Expected output includes metrics for:
 
 ---
 
+## AI Collaboration Reflection
+
+This project was built with the help of GitHub Copilot and ChatGPT. I used AI tools for code generation, brainstorming, and debugging. For example, Copilot quickly scaffolded the initial recommender and agent classes, and suggested test cases that matched my function signatures.
+
+**Helpful AI suggestion:**
+- When implementing the agentic workflow, Copilot suggested a plan-act-check structure that mapped directly to the project requirements. This saved time and made the workflow more modular and testable.
+
+**Flawed AI suggestion:**
+- At one point, Copilot generated a retrieval function that only indexed whole files, not paragraphs. This was too simplistic for the RAG stretch feature, so I rewrote it to chunk notes by paragraph and index each chunk separately. This improved retrieval accuracy and met the advanced requirements.
+
+Overall, AI tools accelerated development and helped with boilerplate, but I had to review, adapt, and sometimes correct their output to ensure the system met all requirements and handled edge cases.
+
+---
+
 ## Design Decisions
 
 - I used a lightweight keyword-based retriever so the RAG flow works without external APIs.

@@ -170,7 +170,7 @@ The test suite includes 5 tests covering:
 
 - **Loom Video Walkthrough**: [https://www.loom.com/share/3a78fc5356fe4367bf516aff0c1e3ada]
   Shows end‑to‑end runs for recommendation, quiz generation, and reliability check.
-- **GitHub Repository**: [https://github.com/jbvillegas/ai110-module3show-musicrecommendersimulation-starter](https://github.com/jbvillegas/ai110-module3show-musicrecommendersimulation-starter)
+- **GitHub Repository**: [https://github.com/jbvillegas/applied-ai-music-recommender](https://github.com/jbvillegas/applied-ai-music-recommender)
 - **Project Reflection Paragraph** (for portfolio):  
   *This project demonstrates my ability to integrate retrieval, agentic planning, and reliability into a practical AI system. By combining a rule‑based recommender with a RAG‑powered study assistant that self‑checks its outputs, I built a solution that is both transparent and robust. It showcases my skills in prompt engineering, workflow orchestration, and building for evaluation—key competencies for an AI engineer.*
 

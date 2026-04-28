@@ -1,6 +1,3 @@
-Here's the modified README, restructured to match the auto‑debugger example while preserving all the original project details.
-
-```markdown
 # 🎵 Music Recommender + Study Bot
 
 ## Overview
@@ -19,7 +16,7 @@ This project extends the **Module 3: Building an LLM-Powered Application** proje
 
 ## System Architecture
 
-![Architecture Diagram](recommendation_flowchart.mmd) *(Note: The `.mmd` file can be rendered as a diagram; see the original repository.)*
+![Architecture Diagram](recommendation_flowchart.mmd) 
 
 ### Components & Data Flow
 1. **CLI Interface** (`src/main.py`) – Accepts command‑line arguments: mode (`recommend`, `quiz`, `reliability`), query, tone, number of top results.
@@ -108,15 +105,26 @@ Reliability metrics (5 runs):
 
 ## Design Decisions & Trade‑offs
 
-| Decision | Rationale | Trade‑off |
-|----------|-----------|-----------|
-| Keyword‑based retrieval (no vector DB) | Works without external APIs, deterministic | May miss semantically similar notes not sharing keywords |
-| Simulated specialized model (tone switching) | Reproducible, no fine‑tuning cost | Not a real LLM; limited flexibility |
-| Agentic plan‑act‑check loop | Makes reasoning observable, easier to debug | Slower than single‑shot generation |
-| Rule‑based recommendation scoring | Explainable and fast | Cannot learn from user behavior |
-| Reliability repeats only 5 times | Balances speed and statistical confidence | Might miss rare instability |
+Decision: Keyword‑based retrieval (no vector DB) 
+Rationale: Works without external APIs, deterministic 
+Trade-off: May miss semantically similar notes not sharing keywords
 
-## Reliability & Testing
+Decision: Simulated specialized model (tone switching)
+Rationale: Reproducible, no fine‑tuning cost
+Trade-off: Not a real LLM; limited flexibility
+
+Decision: Agentic plan‑act‑check loop 
+Rationale:  Makes reasoning observable, easier to debug 
+Trade-off: Slower than single‑shot generation
+
+Decision: Rule‑based recommendation scoring
+Rationale: Explainable and fast 
+Trade-off: Cannot learn from user behavior 
+
+Decision: Reliability repeats only 5 times
+Rationale: Balances speed and statistical confidence 
+Trade-off: Might miss rare instability
+
 
 ### Automated Test Harness
 Run all tests with:

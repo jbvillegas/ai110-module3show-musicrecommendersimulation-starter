@@ -1,37 +1,45 @@
-# 🎧 Model Card: VibeFinder 1.0
+
+# 🎧 Model Card: VibeFinder 2.0
 
 ## Model Name
-VibeFinder 1.0
+VibeFinder 2.0
 
 ## Goal / Task
-Suggests songs that match a user's musical taste. Predicts which songs a user will like based on genre, mood, energy, and tempo.
+Suggests songs that match a user's musical taste and provides explainable, reliable recommendations. Also acts as a study assistant by generating quiz questions grounded in project notes.
 
 ## Data Used
-Uses a CSV file with 17 songs. Each song has: id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness. Limited by small size and genre variety.
+Uses a CSV file with song metadata (id, title, artist, genre, mood, energy, tempo_bpm, valence, danceability, acousticness, etc.). Study notes are stored as markdown files and used for retrieval-augmented quiz generation.
 
 ## Algorithm Summary
-Scores each song by matching genre (+1 or +2), mood (+1), energy (closer is better), and tempo (closer is better). Adds up points for each match. Ranks songs by total score and recommends the top ones.
+- **Music Recommendation:** Combines retrieval and rule-based scoring. Songs are filtered and ranked by genre, mood, energy, and tempo similarity to user preferences. Explanations are generated for each recommendation.
+- **Agentic Study Assistant:** Uses a plan-act-check agent loop to generate quiz questions. Retrieves relevant notes, generates a question, and self-checks for grounding and clarity.
+- **Reliability Harness:** Includes automated tests for recommendation stability and quiz consistency. Guardrails ensure only valid songs/genres are recommended and that outputs are deterministic for the same input.
 
 ## Observed Behavior / Biases
-Songs with popular genres or high energy often rank higher. If a genre is common in the data, those songs show up more. Rare or conflicting preferences get less relevant results. Same songs can repeat if the dataset is small.
+- Popular genres or high-energy songs may dominate results if the dataset is small.
+- The system is robust to invalid input and produces consistent results for repeated queries.
+- Quiz questions are always grounded in the provided notes, preventing hallucination.
 
 ## Evaluation Process
-Tested with different user profiles (pop, lofi, rock, edge cases). Compared top results for each. Changed weights and features to see how rankings shift. Wrote reflections on what changed and why.
+- Tested with multiple user profiles and edge cases.
+- Ran automated tests for recommendation and quiz stability (same input yields same output).
+- Evaluated system guardrails by providing invalid or out-of-domain input.
 
 ## Intended Use and Non-Intended Use
-For classroom demos and learning about recommenders. Not for real music streaming or commercial use. Not for making real user playlists.
+- For educational demos and learning about applied AI, retrieval, and agentic workflows.
+- Not for real music streaming or commercial use.
+- Not intended for generating real user playlists or ungrounded quiz content.
 
 ## Ideas for Improvement
-- Add more songs and genres for better variety.
-- Let users pick more than one favorite genre or mood.
-- Tune weights or use machine learning for smarter scoring.
+- Expand the song and note datasets for more variety and realism.
+- Add user feedback to refine recommendations over time.
+- Experiment with machine learning or hybrid approaches for ranking.
+- Enhance the UI for better user interaction and transparency.
 
 ## Personal Reflection
 
-Biggest learning moment: Realizing how much impact simple weights and feature choices have on recommendations. Even small changes in the scoring logic can shift results a lot.
+Biggest learning moment: The quality and reliability of recommendations depend not just on the scoring logic, but on disciplined data handling, retrieval, and evaluation. Adding agentic and RAG features made the system more explainable and robust, but also required careful testing and guardrails.
 
-AI tools helped speed up coding and gave ideas for edge cases and experiments. I still had to double-check logic, especially for math and when results looked odd. Sometimes, AI suggestions needed tweaks to fit my dataset or goals.
+AI tools accelerated development, especially for code generation and test design, but still required human oversight for edge cases and integration. The most surprising aspect was how much small changes in input structure or retrieval logic could affect the user experience.
 
-I was surprised that even a basic scoring system can make recommendations that "feel" personal, but also how quickly it can get stuck in a rut if the data or weights are off.
-
-If I kept going, I'd add more data, let users pick multiple genres/moods, and maybe try a machine learning approach to learn weights from real user choices.
+If I continued, I’d focus on richer data, more user controls, and deeper evaluation of both recommendation quality and system reliability.

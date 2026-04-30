@@ -163,7 +163,8 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     score += popularity_score
     reasons.append(f"popularity (+{popularity_score:.2f})")
 
-    if song.get('language', '').lower() == 'english':
+    language = song.get('language', '')
+    if isinstance(language, str) and language.lower() == 'english':
         score += 0.2
         reasons.append("English language (+0.2)")
 

@@ -8,7 +8,7 @@ import os
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Load songs once at startup
 SONGS_PATH = os.path.join(os.path.dirname(__file__), '../data/songs.csv')

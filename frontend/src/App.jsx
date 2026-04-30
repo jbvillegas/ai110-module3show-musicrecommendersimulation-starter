@@ -1,16 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 
-const mockRecommendations = [
-  { title: 'Sunrise City', artist: 'Neon Echo', reason: 'genre match, energy closeness' },
-  { title: 'Gym Hero', artist: 'Max Pulse', reason: 'energy closeness, tempo closeness' },
-  { title: 'Rooftop Lights', artist: 'Indigo Parade', reason: 'genre match, tempo closeness' },
-];
 
-const mockQuiz = {
-  question: "What is the primary factor the recommender uses to match songs to user preferences?",
-  context: "Based on the notes in 'study_notes.md [chunk 0]'..."
-};
 
 function App() {
   const [mode, setMode] = useState('recommend');
@@ -21,12 +12,47 @@ function App() {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setResults(null);
     if (mode === 'recommend') {
-      setResults(mockRecommendations);
+      // Send POST to /recommend
+      const payload = {
+        genre: input.genre,
+        mood: input.mood,
+        energy: 0.7, // Optionally add a slider/input for energy
+        tempo_bpm: 120.0 // Optionally add a slider/input for tempo
+      };
+      try {
+        const res = await fetch('http://localhost:5050/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        setResults(data);
+      } catch (err) {
+        setResults([]);
+        alert('Failed to fetch recommendations. Is the backend running?');
+      }
     } else {
-      setResults(mockQuiz);
+      // Send POST to /quiz
+      const payload = {
+        query: input.query,
+        tone: input.tone
+      };
+      try {
+        const res = await fetch('http://localhost:5050/quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        setResults(data);
+      } catch (err) {
+        setResults({ question: '', context: '' });
+        alert('Failed to fetch quiz question. Is the backend running?');
+      }
     }
   };
 

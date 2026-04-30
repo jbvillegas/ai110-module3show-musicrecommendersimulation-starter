@@ -168,7 +168,7 @@ The test suite includes 5 tests covering:
 
 ## Portfolio & Presentation
 
-- **Loom Video Walkthrough**: [https://www.loom.com/share/3a78fc5356fe4367bf516aff0c1e3ada]
+- **Loom Video Walkthrough**: [https://www.loom.com/share/af2138f8a2c64ca18af3a27f7a713ffe]
   Shows end‑to‑end runs for recommendation, quiz generation, and reliability check.
 - **GitHub Repository**: [https://github.com/jbvillegas/applied-ai-music-recommender](https://github.com/jbvillegas/applied-ai-music-recommender)
 - **Project Reflection Paragraph** (for portfolio):  
